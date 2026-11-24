@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Story | NOIRÉ PERFUMES</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <style>
+        .about-hero {
+            height: 65vh;
+            background: linear-gradient(rgba(23,23,23,0.6), rgba(23,23,23,0.9)), url('https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .about-content {
+            padding: 9rem 0;
+        }
+
+        .editorial-block {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+            margin-bottom: 9rem;
+        }
+
+        .editorial-block.reverse {
+            direction: rtl;
+        }
+        .editorial-block.reverse .editorial-text {
+            direction: ltr;
+        }
+
+        .editorial-img {
+            height: 600px;
+            border: 1px solid var(--border-color);
+        }
+
+        .editorial-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .editorial-text span {
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            font-size: 0.8rem;
+            display: block;
+            margin-bottom: 1.5rem;
+        }
+
+        .editorial-text h2 {
+            font-size: 3.2rem;
+            margin-bottom: 2rem;
+            line-height: 1.2;
+        }
+
+        .editorial-text p {
+            color: var(--text-muted);
+            line-height: 2;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .philosophy-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3.5rem;
+            margin-top: 6rem;
+            text-align: center;
+        }
+
+        .philosophy-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 3rem 2.5rem;
+        }
+
+        .philosophy-item i {
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+        }
+
+        .philosophy-item h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .philosophy-item p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        @media (max-width: 968px) {
+            .editorial-block {
+                grid-template-columns: 1fr;
+                gap: 3.5rem;
+            }
+            .editorial-img {
+                height: 400px;
+            }
+            .philosophy-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="about-hero">
+        <div class="container">
+            <h1 style="font-size: 4.2rem; margin-bottom: 1rem;">The Art of Being Unforgettable.</h1>
+            <p style="letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); font-size: 0.85rem;">Beyond Fragrance, An Identity</p>
+        </div>
+    </section>
+
+    <div class="about-content">
+        <div class="container">
+
+            <div class="editorial-block">
+                <div class="editorial-img">
+                    <img src="https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=1000&q=80" alt="Master perfumer at work">
+                </div>
+                <div class="editorial-text">
+                    <span>The Composition</span>
+                    <h2>A Scientific Symphony</h2>
+                    <p>At NOIRÉ, we view the creation of a perfume not as a commercial endeavor, but as an architectural feat. We begin with a skeletal structure of woody base notes, layering heart notes of rare flora, and finishing with volatile, sparkling top notes that command immediate intrigue.</p>
+                    <p>Our ingredients are sourced from private estates across five continents—ensuring uncompromising quality and unmatched longevity on skin and fabric.</p>
+                </div>
+            </div>
+
+            <div class="editorial-block reverse">
+                <div class="editorial-img">
+                    <img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=1000&q=80" alt="Luxury perfume flacon">
+                </div>
+                <div class="editorial-text">
+                    <span>The Flacon</span>
+                    <h2>Craftsmanship in Crystal</h2>
+                    <p>We believe that a masterpiece should be housed in a vessel that reflects its gravity. Each NOIRÉ flacon is hand-blown from heavyweight lead-free crystal and topped with a cold-pressed metallic cap, gold-plated to prevent oxidation.</p>
+                    <p>The dark tint of our glass serves as a shield against ultraviolet rays, preserving the volatile molecular structure of the extraits within.</p>
+                </div>
+            </div>
+
+            <div class="philosophy-grid">
+                <div class="philosophy-item">
+                    <i class="fa-solid fa-leaf"></i>
+                    <h3>Ethical Sourcing</h3>
+                    <p>Every raw material is sourced via sustainable cooperatives, ensuring the longevity of these rare botanical species and fair treatment of harvesters.</p>
+                </div>
+                <div class="philosophy-item">
+                    <i class="fa-solid fa-hourglass-half"></i>
+                    <h3>Slow Extraction</h3>
+                    <p>We reject industrial flash-distillation. Our essences are extracted via cold maceration to retain the full vibrational profile of each flower and wood.</p>
+                </div>
+                <div class="philosophy-item">
+                    <i class="fa-solid fa-medal"></i>
+                    <h3>Concentrated Purity</h3>
+                    <p>While standard perfumes offer 15% concentration, every NOIRÉ release is an Extrait de Parfum at a minimum of 32% concentration.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script type="module">
+        import { renderHeaderFooter } from './assets/js/components.js';
+        renderHeaderFooter('about');
+    </script>
+</body>
+</html>

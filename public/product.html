@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details | NOIRÉ PERFUMES</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <style>
+        .product-detail-section {
+            padding: 150px 0 100px;
+        }
+
+        .product-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: start;
+        }
+
+        .product-gallery {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            height: 620px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-gallery img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-details-content .collection-tag {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            color: var(--gold);
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .product-details-content h1 {
+            font-size: 3.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .product-rating span {
+            color: var(--text-muted);
+            margin-left: 8px;
+        }
+
+        .product-price-lg {
+            font-family: var(--font-serif);
+            font-size: 2.2rem;
+            color: var(--ivory);
+            margin-bottom: 1.8rem;
+            font-weight: 600;
+        }
+
+        .product-long-desc {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+        }
+
+        /* Fragrance Notes Breakdown */
+        .notes-breakdown {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 2.2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .notes-breakdown h3 {
+            font-size: 1.15rem;
+            margin-bottom: 1.2rem;
+            color: var(--gold);
+            letter-spacing: 0.12em;
+        }
+
+        .note-row {
+            display: flex;
+            margin-bottom: 0.9rem;
+            font-size: 0.9rem;
+        }
+
+        .note-label {
+            width: 130px;
+            color: var(--ivory);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .note-items {
+            color: var(--text-muted);
+            flex: 1;
+        }
+
+        /* Size Selector */
+        .selector-group {
+            margin-bottom: 2.2rem;
+        }
+
+        .selector-label {
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--ivory);
+            margin-bottom: 0.8rem;
+            display: block;
+        }
+
+        .size-options {
+            display: flex;
+            gap: 1.2rem;
+        }
+
+        .size-btn {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 11px 24px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .size-btn.active, .size-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: var(--bg-secondary);
+        }
+
+        /* Quantity & Add */
+        .purchase-actions {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .quantity-selector {
+            display: flex;
+            border: 1px solid var(--border-color);
+            background: var(--bg-primary);
+        }
+
+        .qty-btn {
+            background: transparent;
+            color: var(--ivory);
+            width: 45px;
+            height: 52px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .qty-btn:hover {
+            background: var(--gold);
+            color: var(--text-dark);
+        }
+
+        .qty-input {
+            width: 50px;
+            background: transparent;
+            border: none;
+            color: var(--ivory);
+            text-align: center;
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .wishlist-btn-detail {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--ivory);
+            padding: 15px 24px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .wishlist-btn-detail:hover, .wishlist-btn-detail.active {
+            border-color: var(--gold);
+            background: var(--gold);
+            color: var(--text-dark);
+        }
+
+        .stock-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #2ecc71;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+        }
+
+        .stock-badge i {
+            font-size: 0.6rem;
+        }
+
+        @media (max-width: 968px) {
+            .product-detail-grid {
+                grid-template-columns: 1fr;
+                gap: 3.5rem;
+            }
+            .product-gallery {
+                height: 480px;
+            }
+            .purchase-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="product-detail-section">
+        <div class="container" id="product-container">
+            <!-- Injected via JS -->
+        </div>
+    </div>
+
+    <script type="module">
+        import { fetchPublishedProducts } from './assets/js/api.js';
+        import { renderHeaderFooter, addToCart, toggleWishlist, getWishlist } from './assets/js/components.js';
+
+        renderHeaderFooter('shop');
+
+        let products = [];
+        try {
+            products = await fetchPublishedProducts();
+        } catch (e) {
+            console.warn('Supabase fetch failed, falling back to local data:', e);
+        }
+
+        if (!products || products.length === 0) {
+            const dataMod = await import('./assets/js/data.js');
+            products = dataMod.products;
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id') || 'luxury-perfume';
+
+        const product = products.find(p => p.id === productId) || products[0];
+
+        document.title = `${product.name} | NOIRÉ PERFUMES`;
+
+        let selectedSize = product.sizes[0];
+        let currentQty = 1;
+
+        const container = document.getElementById('product-container');
+
+        function renderDetail() {
+            const wishlist = getWishlist();
+            const isWishlisted = wishlist.includes(product.id);
+
+            let basePrice = product.price;
+            if (selectedSize.includes('150ml')) basePrice *= 1.4;
+
+            container.innerHTML = `
+                <div class="product-detail-grid">
+                    <div class="product-gallery">
+                        <span class="product-badge" style="top:20px; left:20px;">${product.collection}</span>
+                        <img src="${product.image}" alt="${product.name}">
+                    </div>
+                    <div class="product-details-content">
+                        <span class="collection-tag">${product.category} Extrait de Parfum</span>
+                        <h1>${product.name}</h1>
+                        <div class="product-rating">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <span>(${product.rating} / 5.0 Connoisseur Score)</span>
+                        </div>
+                        <div class="product-price-lg" id="display-price">Rs. ${basePrice.toLocaleString()}</div>
+                        <p class="product-long-desc">${product.description}</p>
+
+                        <div class="notes-breakdown">
+                            <h3>Olfactory Pyramid (Editable Sample Profile)</h3>
+                            <div class="note-row">
+                                <div class="note-label">Top Notes:</div>
+                                <div class="note-items">${product.topNotes.join(', ')}</div>
+                            </div>
+                            <div class="note-row">
+                                <div class="note-label">Heart Notes:</div>
+                                <div class="note-items">${product.heartNotes.join(', ')}</div>
+                            </div>
+                            <div class="note-row">
+                                <div class="note-label">Base Notes:</div>
+                                <div class="note-items">${product.baseNotes.join(', ')}</div>
+                            </div>
+                        </div>
+
+                        <div class="selector-group">
+                            <span class="selector-label">Select Flacon Size</span>
+                            <div class="size-options" id="size-options">
+                                ${product.sizes.map((size, idx) => `
+                                    <button class="size-btn ${size === selectedSize ? 'active' : ''}" data-size="${size}">${size}</button>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <div class="purchase-actions">
+                            <div class="quantity-selector">
+                                <button class="qty-btn" id="qty-minus">-</button>
+                                <input type="text" id="qty-value" class="qty-input" value="${currentQty}" readonly>
+                                <button class="qty-btn" id="qty-plus">+</button>
+                            </div>
+                            <button class="btn-gold" id="add-to-cart-main" style="flex:1;">Add to Bag</button>
+                            <button class="wishlist-btn-detail ${isWishlisted ? 'active' : ''}" id="wishlist-detail-btn">
+                                <i class="fa-${isWishlisted ? 'solid' : 'regular'} fa-heart"></i> Wishlist
+                            </button>
+                        </div>
+
+                        <div class="stock-badge">
+                            <i class="fa-solid fa-circle"></i> In Stock &bull; Ready for Atelier Dispatch
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Re-bind listeners
+            document.querySelectorAll('.size-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    selectedSize = e.target.dataset.size;
+                    renderDetail();
+                });
+            });
+
+            const qtyInput = document.getElementById('qty-value');
+            document.getElementById('qty-minus').addEventListener('click', () => {
+                currentQty = Math.max(1, currentQty - 1);
+                qtyInput.value = currentQty;
+            });
+
+            document.getElementById('qty-plus').addEventListener('click', () => {
+                currentQty += 1;
+                qtyInput.value = currentQty;
+            });
+
+            document.getElementById('add-to-cart-main').addEventListener('click', () => {
+                addToCart(product.id, selectedSize, currentQty);
+            });
+
+            document.getElementById('wishlist-detail-btn').addEventListener('click', () => {
+                const added = toggleWishlist(product.id);
+                renderDetail();
+            });
+        }
+
+        renderDetail();
+    </script>
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Atelier | NOIRÉ PERFUMES</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <style>
+        .contact-section {
+            padding: 170px 0 110px;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 6rem;
+        }
+
+        .contact-info h1 {
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .contact-info p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+
+        .info-item {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .info-item i {
+            color: var(--gold);
+            font-size: 1.5rem;
+            margin-top: 5px;
+        }
+
+        .info-item h3 {
+            font-size: 1.15rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.1em;
+        }
+
+        .info-item p {
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+
+        .contact-form-wrapper {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 4rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--gold);
+            margin-bottom: 0.8rem;
+        }
+
+        .form-control {
+            width: 100%;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-subtle);
+            padding: 15px 20px;
+            color: var(--ivory);
+            font-family: var(--font-sans);
+            font-size: 0.95rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--gold);
+        }
+
+        textarea.form-control {
+            height: 150px;
+            resize: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            font-size: 0.9rem;
+        }
+
+        .validation-error {
+            color: #e74c3c;
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        @media (max-width: 968px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+            .contact-form-wrapper {
+                padding: 2.5rem;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="contact-section">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h1>Inquiries & Private Appointments</h1>
+                    <p>Whether you seek assistance with your order or have questions regarding our atelier extraits, our curation team is here to assist.</p>
+
+                    <div class="info-item">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <div>
+                            <h3>L'Atelier de NOIRÉ</h3>
+                            <p>Exclusive E-Commerce Atelier & Dispatch Hub, Pakistan</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="fa-solid fa-envelope"></i>
+                        <div>
+                            <h3>Digital Correspondence</h3>
+                            <p>curator@noire-perfumes.com</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="fa-solid fa-phone"></i>
+                        <div>
+                            <h3>Private Concierge</h3>
+                            <p>+92 300 9876543</p>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 4rem;">
+                        <h3 style="font-size: 1rem; color: var(--gold); margin-bottom: 1.5rem; letter-spacing: 0.2em; text-transform: uppercase;">Follow The Journey</h3>
+                        <div style="display: flex; gap: 2rem; font-size: 1.5rem;">
+                            <a href="#" style="color: var(--text-muted);"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#" style="color: var(--text-muted);"><i class="fa-brands fa-pinterest-p"></i></a>
+                            <a href="#" style="color: var(--text-muted);"><i class="fa-brands fa-facebook-f"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form-wrapper">
+                    <form id="contact-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">Your Name</label>
+                                <input type="text" id="name" class="form-control" placeholder="Full Name" required>
+                                <div class="validation-error" id="name-error">Please enter your name.</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" class="form-control" placeholder="email@address.com" required>
+                                <div class="validation-error" id="email-error">Please enter a valid email address.</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subject">Nature of Inquiry</label>
+                            <select id="subject" class="form-control">
+                                <option>General Inquiry</option>
+                                <option>Order Support & Tracking</option>
+                                <option>Bank Transfer Receipt Verification</option>
+                                <option>Press & Media</option>
+                                <option>Corporate Gifting</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Your Message</label>
+                            <textarea id="message" class="form-control" placeholder="How may we assist you today?" required></textarea>
+                            <div class="validation-error" id="message-error">Please enter your message.</div>
+                        </div>
+
+                        <button type="submit" class="btn-gold submit-btn">Send Correspondence</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { renderHeaderFooter, showToast } from './assets/js/components.js';
+        renderHeaderFooter('contact');
+
+        const form = document.getElementById('contact-form');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            let valid = true;
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+
+            if (!name) {
+                document.getElementById('name-error').style.display = 'block';
+                valid = false;
+            } else {
+                document.getElementById('name-error').style.display = 'none';
+            }
+
+            if (!email || !email.includes('@')) {
+                document.getElementById('email-error').style.display = 'block';
+                valid = false;
+            } else {
+                document.getElementById('email-error').style.display = 'none';
+            }
+
+            if (!message) {
+                document.getElementById('message-error').style.display = 'block';
+                valid = false;
+            } else {
+                document.getElementById('message-error').style.display = 'none';
+            }
+
+            if (valid) {
+                showToast('Correspondence sent successfully to atelier curators');
+                form.reset();
+            }
+        });
+    </script>
+</body>
+</html>

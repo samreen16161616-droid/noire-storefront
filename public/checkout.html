@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Checkout | NOIRÉ PERFUMES</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <style>
+        .checkout-page { padding-top: 150px; padding-bottom: 100px; background: var(--bg-primary); }
+        .checkout-grid { display: grid; grid-template-columns: 1fr 450px; gap: 4rem; max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+        .checkout-form { background: var(--bg-secondary); padding: 3rem; border: 1px solid var(--border-color); }
+        .form-group { margin-bottom: 1.5rem; }
+        label { display: block; margin-bottom: 0.5rem; color: var(--ivory); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        input, textarea, select { width: 100%; padding: 12px; background: var(--bg-primary); border: 1px solid var(--border-color); color: var(--ivory); font-family: var(--font-sans); }
+        input:focus { border-color: var(--gold); outline: none; }
+
+        .order-summary { background: var(--bg-card); padding: 2rem; border: 1px solid var(--border-color); height: fit-content; }
+        .summary-item { display: flex; justify-content: space-between; margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem; }
+        .summary-total { border-top: 1px solid var(--border-color); margin-top: 1rem; padding-top: 1rem; font-size: 1.2rem; color: var(--gold); font-weight: 600; }
+        .btn-order { width: 100%; margin-top: 2rem; padding: 1rem; background: var(--gold); border: none; text-transform: uppercase; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .btn-order:hover { background: var(--gold-light); }
+    </style>
+</head>
+<body>
+    <div class="checkout-page">
+        <div class="container">
+            <h1 style="text-align: center; font-size: 3rem; margin-bottom: 4rem;">Secure Atelier Checkout</h1>
+            <div class="checkout-grid">
+                <form id="checkout-form" class="checkout-form">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" required placeholder="Enter your full name">
+                    </div>
+                    <div class="form-group">
+                        <label>Mobile Number (Pakistan)</label>
+                        <input type="tel" required placeholder="03xx-xxxxxxx">
+                    </div>
+                    <div class="form-group">
+                        <label>Delivery Address</label>
+                        <textarea rows="3" required placeholder="Complete delivery address"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>City</label>
+                        <input type="text" required placeholder="e.g. Lahore, Karachi, Islamabad">
+                    </div>
+                </form>
+
+                <div class="order-summary">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 2rem;">Order Summary</h2>
+                    <div id="summary-list"></div>
+                    <div class="summary-total">
+                        <div class="summary-item"><span>Grand Total</span><span id="grand-total">Rs. 0</span></div>
+                    </div>
+                    <button type="submit" form="checkout-form" class="btn-order">Confirm Order (COD)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { getCart, renderHeaderFooter } from './assets/js/components.js';
+        import { products } from './assets/js/data.js';
+        renderHeaderFooter();
+
+        const cart = getCart();
+        const listEl = document.getElementById('summary-list');
+        const totalEl = document.getElementById('grand-total');
+
+        let subtotal = 0;
+        listEl.innerHTML = cart.map(item => {
+            const p = products.find(prod => prod.id === item.productId);
+            const price = p.price * item.quantity;
+            subtotal += price;
+            return `<div class="summary-item"><span>${p.name} x ${item.quantity}</span><span>Rs. ${price.toLocaleString()}</span></div>`;
+        }).join('');
+
+        totalEl.textContent = `Rs. ${subtotal.toLocaleString()}`;
+
+        document.getElementById('checkout-form').onsubmit = (e) => {
+            e.preventDefault();
+            alert('Order placed successfully! A member of the NOIRÉ team will contact you shortly to confirm your delivery.');
+            localStorage.removeItem('noire_cart');
+            window.location.href = 'index.html';
+        };
+    </script>
+</body>
+</html>

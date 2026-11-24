@@ -1,0 +1,9 @@
+{
+  "name": "noire-perfumes",
+  "version": "1.0.0",
+  "description": "NOIRÉ Perfumes E-Commerce",
+  "type": "module",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.46.0"
+  }
+}

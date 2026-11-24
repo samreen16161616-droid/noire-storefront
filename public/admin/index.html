@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | NOIRÉ Admin</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <style>
+        .admin-container { padding: 120px 2rem 4rem; max-width: 1400px; margin: 0 auto; color: var(--ivory); }
+        .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 2rem; }
+        .admin-card { background: var(--bg-card); border: 1px solid var(--border-color); padding: 2rem; }
+        .admin-card h3 { color: var(--gold); margin-bottom: 0.5rem; }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;">
+            <h1>Admin Dashboard</h1>
+            <button id="logout-btn" class="btn-outline">Sign Out</button>
+        </div>
+
+        <div class="admin-grid">
+            <div class="admin-card">
+                <h3>Products</h3>
+                <p>Manage perfumes, prices, notes, and inventory.</p>
+                <a href="products.html" class="btn-gold" style="display:inline-block; margin-top:1.5rem;">Manage Products</a>
+            </div>
+            <div class="admin-card">
+                <h3>Categories</h3>
+                <p>Organize product categories.</p>
+                <a href="categories.html" class="btn-gold" style="display:inline-block; margin-top:1.5rem;">Manage Categories</a>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { checkAdminAuth, logout } from '../assets/js/auth.js';
+
+        // Guard check on load
+        const session = await checkAdminAuth();
+        if (session) {
+            console.log('Admin authenticated:', session.user.email);
+        }
+
+        document.getElementById('logout-btn').onclick = logout;
+    </script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOIRÉ PERFUMES | Haute Parfumerie</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <style>
+        .cinematic-hero {
+            height: 100vh; position: relative; display: flex; align-items: center; justify-content: center;
+            background: radial-gradient(circle at center, #1C1917 0%, #0A0A0A 80%); overflow: hidden; padding-top: 100px;
+        }
+        .hero-inner {
+            position: relative; z-index: 5; display: grid; grid-template-columns: 1.2fr 1fr; align-items: center; max-width: 1400px; width: 100%; padding: 0 4rem; gap: 4rem;
+        }
+        .hero-text h1 {
+            font-family: 'Cormorant Garamond', serif; font-size: clamp(3.5rem, 6vw, 6.5rem);
+            line-height: 0.95; letter-spacing: -0.01em; margin-bottom: 2rem; font-weight: 300;
+        }
+        .hero-text h1 span { font-style: italic; color: #C5A059; font-weight: 400; }
+        .bottle-glow {
+            position: absolute; width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(216,183,117,0.15) 0%, transparent 70%);
+            border-radius: 50%; z-index: 1;
+        }
+        .hero-visual-3d {
+            position: relative; height: 600px; display: flex; align-items: center; justify-content: center;
+        }
+        .floating-bottle-img {
+            max-width: 420px; width: 100%; height: auto;
+            filter: drop-shadow(0 40px 60px rgba(0,0,0,0.9));
+            animation: floatBottle 6s ease-in-out infinite;
+            z-index: 2;
+        }
+        @keyframes floatBottle {
+            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+            50% { transform: translateY(-30px) rotate(2deg) scale(1.05); }
+        }
+        .showcase-section { padding: 8rem 2rem; background: var(--bg-primary); }
+        .products-editorial-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; max-width: 1400px; margin: 0 auto;
+        }
+        .product-card {
+            background: var(--bg-card); border: 1px solid var(--border-color); padding: 1.5rem; transition: var(--transition);
+        }
+        .product-card:hover { border-color: var(--gold); transform: translateY(-10px); }
+        .img-box { height: 400px; overflow: hidden; margin-bottom: 1.5rem; }
+        .img-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s; }
+        .product-card:hover img { transform: scale(1.1); }
+    </style>
+</head>
+<body>
+
+    <header class="cinematic-hero">
+        <div class="hero-inner">
+            <div class="hero-text">
+                <span style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.4em; color: var(--gold); display: block; margin-bottom: 1.5rem;">The NOIRÉ Atelier Reimagined</span>
+                <h1>Beyond the Ordinary. <span>Beyond Fragrance.</span></h1>
+                <p>Discover a signature that speaks before you do.</p>
+                <div class="hero-btns" style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <a href="shop.html" class="btn-gold">Discover NOIRÉ</a>
+                    <a href="shop.html?category=collections" class="btn-outline">Shop Collection</a>
+                </div>
+            </div>
+            <div class="hero-visual-3d">
+                <div class="bottle-glow"></div>
+                <img src="assets/images/products/product-01.jpg.webp" alt="Luxury Perfume" class="floating-bottle-img">
+            </div>
+        </div>
+    </header>
+
+    <section class="showcase-section">
+        <div class="container">
+            <h2 style="text-align: center; font-size: 3rem; margin-bottom: 4rem;">Bestselling Perfumes</h2>
+            <div class="products-editorial-grid" id="home-grid"></div>
+        </div>
+    </section>
+
+    <!-- Editorial Campaign Section -->
+    <section class="editorial-section" style="padding: 10rem 4rem; background: #FAF7F2; color: #07130E;">
+        <div class="container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;">
+            <div class="editorial-image" style="height: 600px; background: #E2DACD;">
+                <img src="assets/images/editorial/editorial-1.webp" alt="Editorial" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div class="editorial-text">
+                <h2 style="font-size: 3.5rem; margin-bottom: 2rem; color: #07130E;">Artistry in Every Drop</h2>
+                <p style="font-size: 1.2rem; margin-bottom: 2rem;">Crafted with rare essences sourced from the world's finest fields. Every NOIRÉ bottle is a testament to the pursuit of olfactory perfection.</p>
+                <a href="about.html" class="btn-outline" style="border-color: #07130E; color: #07130E;">Our Philosophy</a>
+            </div>
+        </div>
+    </section>
+
+    <script type="module">
+        import { fetchPublishedProducts } from './assets/js/api.js';
+        import { renderHeaderFooter, addToCart } from './assets/js/components.js';
+        renderHeaderFooter('home');
+
+        let products = [];
+        try {
+            products = await fetchPublishedProducts();
+        } catch (e) {
+            console.warn('Supabase fetch failed, falling back to local data:', e);
+        }
+
+        if (!products || products.length === 0) {
+            const dataMod = await import('./assets/js/data.js');
+            products = dataMod.products;
+        }
+
+        const grid = document.getElementById('home-grid');
+        grid.innerHTML = products.filter(p => p.bestseller).slice(0, 3).map(p => `
+            <div class="product-card">
+                <div class="img-box"><img src="${p.image}" alt="${p.name}"></div>
+                <h3 class="product-name" style="font-size:1.8rem; margin-bottom:0.5rem;">${p.name}</h3>
+                <span class="product-price" style="color:var(--gold); font-size:1.2rem; display:block; margin-bottom:1.5rem;">Rs. ${p.price.toLocaleString()}</span>
+                <button class="btn-outline" style="width:100%;" onclick="window.location.href='product.html?id=${p.id}'">View Details</button>
+            </div>
+        `).join('');
+        window.quickAdd = (id) => addToCart(id, '100ml', 1);
+    </script>
+</body>
+</html>

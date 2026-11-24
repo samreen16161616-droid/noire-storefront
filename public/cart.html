@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Bag & Wishlist | NOIRÉ PERFUMES</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <style>
+        .cart-section {
+            padding: 150px 0 100px;
+        }
+
+        .cart-title-area {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .cart-title-area h1 {
+            font-size: 3.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tab-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1.5rem;
+        }
+
+        .tab-btn {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding-bottom: 5px;
+            position: relative;
+            background: none;
+            border: none;
+        }
+
+        .tab-btn.active {
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -16px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--gold);
+        }
+
+        .cart-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .cart-items-list {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item-img {
+            width: 100px;
+            height: 125px;
+            background: #1c1c1c;
+            object-fit: cover;
+            border: 1px solid var(--border-color);
+        }
+
+        .cart-item-details {
+            flex: 1;
+        }
+
+        .cart-item-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.4rem;
+            color: var(--ivory);
+        }
+
+        .cart-item-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.8rem;
+        }
+
+        .cart-item-price {
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .item-qty-control {
+            display: flex;
+            border: 1px solid var(--border-color);
+            background: var(--bg-primary);
+        }
+
+        .item-qty-btn {
+            background: transparent;
+            color: var(--ivory);
+            width: 32px;
+            height: 38px;
+            cursor: pointer;
+        }
+
+        .item-qty-input {
+            width: 38px;
+            background: transparent;
+            border: none;
+            color: var(--ivory);
+            text-align: center;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .remove-item-btn {
+            color: var(--text-muted);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .remove-item-btn:hover {
+            color: #e74c3c;
+        }
+
+        /* Order Summary */
+        .order-summary {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 2.8rem;
+        }
+
+        .order-summary h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--gold);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.2rem;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .summary-row.total {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            color: var(--ivory);
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.5rem;
+            margin-top: 1.5rem;
+            font-weight: 600;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .demo-checkout-notice {
+            background: rgba(182, 154, 103, 0.1);
+            border: 1px dashed var(--gold);
+            padding: 1.2rem;
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
+            color: var(--gold);
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 6rem 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+            opacity: 0.6;
+        }
+
+        .empty-state h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state p {
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+        }
+
+        /* Checkout Modal / Section */
+        .checkout-container {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            padding: 3rem;
+            margin-top: 3rem;
+            display: none;
+        }
+
+        .checkout-container h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--gold);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.8rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--gold);
+            margin-bottom: 0.8rem;
+        }
+
+        .form-control {
+            width: 100%;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            padding: 14px 18px;
+            color: var(--ivory);
+            font-family: var(--font-sans);
+            font-size: 0.95rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--gold);
+        }
+
+        textarea.form-control {
+            height: 120px;
+            resize: none;
+        }
+
+        .payment-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .payment-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .payment-card.active, .payment-card:hover {
+            border-color: var(--gold);
+            background: var(--bg-card);
+        }
+
+        .payment-card h4 {
+            color: var(--ivory);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .payment-card p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 968px) {
+            .cart-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .payment-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cart-section">
+        <div class="container">
+            <div class="cart-title-area">
+                <h1>Atelier Vault & Bag</h1>
+                <p>Review your curated olfactory selections or saved wishlist.</p>
+            </div>
+
+            <div class="tab-switcher">
+                <button class="tab-btn active" id="tab-bag-btn">Shopping Bag</button>
+                <button class="tab-btn" id="tab-wishlist-btn">Wishlist</button>
+            </div>
+
+            <div id="main-view-container">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { products } from './assets/js/data.js';
+        import { getCart, removeFromCart, updateQuantity, renderHeaderFooter, getWishlist, toggleWishlist, addToCart, showToast } from './assets/js/components.js';
+
+        renderHeaderFooter('cart');
+
+        let currentTab = 'bag';
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('tab') === 'wishlist') {
+            currentTab = 'wishlist';
+        }
+
+        function renderView() {
+            const container = document.getElementById('main-view-container');
+
+            // Update tab buttons
+            document.getElementById('tab-bag-btn').classList.toggle('active', currentTab === 'bag');
+            document.getElementById('tab-wishlist-btn').classList.toggle('active', currentTab === 'wishlist');
+
+            if (currentTab === 'wishlist') {
+                renderWishlistView(container);
+            } else {
+                renderBagView(container);
+            }
+        }
+
+        function renderWishlistView(container) {
+            const wishlist = getWishlist();
+            if (wishlist.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-regular fa-heart"></i>
+                        <h2>Your wishlist is currently empty</h2>
+                        <p>Save your favorite master fragrances to revisit anytime.</p>
+                        <a href="shop.html" class="btn-gold">Explore Collection</a>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="product-grid">
+                    ${wishlist.map(id => {
+                        const p = products.find(prod => prod.id === id);
+                        if (!p) return '';
+                        const pricePkr = `Rs. ${p.price.toLocaleString()}`;
+                        return `
+                            <div class="product-card">
+                                <div class="product-img-wrapper">
+                                    <span class="product-badge">${p.collection}</span>
+                                    <button class="wishlist-btn-card active" onclick="window.handleRemoveWishlist('${p.id}')" title="Remove">
+                                        <i class="fa-solid fa-heart"></i>
+                                    </button>
+                                    <a href="product.html?id=${p.id}">
+                                        <img src="${p.image}" alt="${p.name}" loading="lazy">
+                                    </a>
+                                </div>
+                                <div class="product-info">
+                                    <span class="product-cat">${p.category} Fragrance</span>
+                                    <h3 class="product-title"><a href="product.html?id=${p.id}">${p.name}</a></h3>
+                                    <p class="product-desc">${p.description}</p>
+                                    <div class="product-footer">
+                                        <span class="product-price">${pricePkr}</span>
+                                        <button class="add-to-cart-btn" onclick="window.handleMoveToBag('${p.id}')" title="Move to Bag">
+                                            <i class="fa-solid fa-bag-shopping"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        function renderBagView(container) {
+            const cart = getCart();
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-solid fa-bag-shopping"></i>
+                        <h2>Your bag is currently empty</h2>
+                        <p>Explore our master collection and discover your signature scent.</p>
+                        <a href="shop.html" class="btn-gold">Explore Collection</a>
+                    </div>
+                `;
+                return;
+            }
+
+            let subtotal = 0;
+            const itemsHtml = cart.map(cartItem => {
+                const product = products.find(p => p.id === cartItem.productId);
+                if (!product) return '';
+
+                let itemPrice = product.price;
+                if (cartItem.size.includes('150ml')) itemPrice *= 1.4;
+
+                const itemTotal = itemPrice * cartItem.quantity;
+                subtotal += itemTotal;
+                const pricePkr = `Rs. ${itemPrice.toLocaleString()}`;
+
+                return `
+                    <div class="cart-item">
+                        <img src="${product.image}" alt="${product.name}" class="cart-item-img">
+                        <div class="cart-item-details">
+                            <h3 class="cart-item-title"><a href="product.html?id=${product.id}">${product.name}</a></h3>
+                            <div class="cart-item-meta">Flacon Size: ${cartItem.size} &bull; ${product.category}</div>
+                            <div class="cart-item-price">${pricePkr}</div>
+                        </div>
+                        <div class="cart-item-actions">
+                            <div class="item-qty-control">
+                                <button class="item-qty-btn" onclick="window.handleQty('${product.id}', '${cartItem.size}', ${cartItem.quantity - 1})">-</button>
+                                <input type="text" class="item-qty-input" value="${cartItem.quantity}" readonly>
+                                <button class="item-qty-btn" onclick="window.handleQty('${product.id}', '${cartItem.size}', ${cartItem.quantity + 1})">+</button>
+                            </div>
+                            <button class="remove-item-btn" onclick="window.handleRemove('${product.id}', '${cartItem.size}')" title="Remove item">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            const shipping = subtotal > 15000 ? 0 : 500;
+            const total = subtotal + shipping;
+
+            container.innerHTML = `
+                <div class="cart-grid">
+                    <div class="cart-items-list">
+                        ${itemsHtml}
+                    </div>
+                    <div class="order-summary">
+                        <h3>Order Summary</h3>
+                        <div class="summary-row">
+                            <span>Subtotal</span>
+                            <span>Rs. ${subtotal.toLocaleString()}</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Courier Dispatch (Free over Rs. 15,000)</span>
+                            <span>${shipping === 0 ? 'FREE' : 'Rs. 500'}</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total Acquisition</span>
+                            <span>Rs. ${total.toLocaleString()}</span>
+                        </div>
+                        <button class="btn-gold checkout-btn" id="proceed-checkout-btn">Proceed to Secure Checkout</button>
+                        <div class="demo-checkout-notice">
+                            <i class="fa-solid fa-shield-halved"></i> Demonstration Mode: Prices in PKR. Select Cash on Delivery or Bank Transfer at checkout.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="checkout-container" id="checkout-section">
+                    <h2>Atelier Secure Checkout</h2>
+                    <form id="checkout-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fullname">Full Name</label>
+                                <input type="text" id="fullname" class="form-control" placeholder="Muhammad Ali" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" class="form-control" placeholder="client@domain.com" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" class="form-control" placeholder="+92 300 1234567" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" id="city" class="form-control" placeholder="Karachi / Lahore / Islamabad" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">Complete Delivery Address</label>
+                            <textarea id="address" class="form-control" placeholder="House / Apartment, Street, Area" required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Select Payment Method</label>
+                            <div class="payment-options">
+                                <div class="payment-card active" data-method="cod" id="pm-cod">
+                                    <h4>Cash on Delivery (COD)</h4>
+                                    <p>Pay securely with cash upon courier delivery at your doorstep across Pakistan.</p>
+                                </div>
+                                <div class="payment-card" data-method="bank" id="pm-bank">
+                                    <h4>Direct Bank Transfer</h4>
+                                    <p>Transfer funds directly to our corporate bank account. Verification required.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="background: var(--bg-primary); padding: 1.5rem; border: 1px solid var(--border-color); margin-bottom: 2rem;" id="bank-instructions-box" style="display:none;">
+                            <h4 style="color: var(--gold); margin-bottom: 0.5rem; font-size: 1rem;">Bank Transfer Instructions</h4>
+                            <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6;">Please transfer Rs. ${total.toLocaleString()} to Habib Bank Limited (HBL) Account: **NOIRÉ PERFUMES ATELIER** (Account No: 0012-34567890-01). Send your receipt screenshot via the Contact page.</p>
+                        </div>
+
+                        <button type="submit" class="btn-gold" style="width: 100%;">Place Order Now (Rs. ${total.toLocaleString()})</button>
+                    </form>
+                </div>
+            `;
+
+            // Bind checkout button toggle
+            document.getElementById('proceed-checkout-btn').addEventListener('click', () => {
+                const section = document.getElementById('checkout-section');
+                section.style.display = 'block';
+                section.scrollIntoView({ behavior: 'smooth' });
+            });
+
+            // Payment method selector
+            let selectedPayment = 'cod';
+            const bankBox = document.getElementById('bank-instructions-box');
+            if (bankBox) bankBox.style.display = 'none';
+
+            document.querySelectorAll('.payment-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    document.querySelectorAll('.payment-card').forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+                    selectedPayment = card.dataset.method;
+                    if (bankBox) {
+                        bankBox.style.display = selectedPayment === 'bank' ? 'block' : 'none';
+                    }
+                });
+            });
+
+            // Checkout form submission
+            document.getElementById('checkout-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('fullname').value;
+                const orderRef = 'NOIRE-' + Math.floor(100000 + Math.random() * 900000);
+
+                localStorage.removeItem('noire_cart');
+
+                container.innerHTML = `
+                    <div class="empty-state" style="border-color: var(--gold);">
+                        <i class="fa-solid fa-circle-check" style="color: var(--gold);"></i>
+                        <h2>Order Placed Successfully</h2>
+                        <p>Thank you, <strong>${name}</strong>. Your order reference is <strong style="color: var(--gold);">${orderRef}</strong>.</p>
+                        <p style="font-size: 0.9rem; margin-top: -1rem; margin-bottom: 2rem; color: var(--text-muted);">Payment Method: ${selectedPayment === 'cod' ? 'Cash on Delivery (COD)' : 'Direct Bank Transfer'}. A confirmation has been registered in our atelier records.</p>
+                        <a href="index.html" class="btn-gold">Return to Home</a>
+                    </div>
+                `;
+            });
+        }
+
+        // Tab Event Listeners
+        document.getElementById('tab-bag-btn').addEventListener('click', () => {
+            currentTab = 'bag';
+            renderView();
+        });
+
+        document.getElementById('tab-wishlist-btn').addEventListener('click', () => {
+            currentTab = 'wishlist';
+            renderView();
+        });
+
+        window.handleQty = (productId, size, newQty) => {
+            updateQuantity(productId, size, newQty);
+            renderView();
+            renderHeaderFooter('cart');
+        };
+
+        window.handleRemove = (productId, size) => {
+            removeFromCart(productId, size);
+            renderView();
+            renderHeaderFooter('cart');
+        };
+
+        window.handleRemoveWishlist = (productId) => {
+            toggleWishlist(productId);
+            renderView();
+        };
+
+        window.handleMoveToBag = (productId) => {
+            addToCart(productId, '100ml', 1);
+            toggleWishlist(productId);
+            currentTab = 'bag';
+            renderView();
+            renderHeaderFooter('cart');
+        };
+
+        renderView();
+    </script>
+</body>
+</html>

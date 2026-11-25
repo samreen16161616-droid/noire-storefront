@@ -7,7 +7,10 @@ const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
 export async function handler(event) {
-    const { orderId, transactionRef } = event.queryStringParameters;
+    // PayFast sends POST for ITN callbacks, or GET for redirect
+    const postData = event.httpMethod === 'POST' ? new URLSearchParams(event.body) : event.queryStringParameters;
+    const receivedSignature = event.headers['signature'] || postData.signature;
+    const { orderId, transactionRef } = postData;
 
     // SECURITY: Reject request immediately if parameters are missing
     if (!orderId || !transactionRef) {
@@ -15,15 +18,20 @@ export async function handler(event) {
     }
 
     // 1. Verify status with PayFast via secure Server-to-Server request
-    const statusResult = await verifyPayFastStatus(transactionRef);
+    const statusResult = await verifyPayFastStatus(transactionRef, postData, receivedSignature);
 
-    // SECURITY: Only proceed if status is explicitly verified as SUCCESS by the gateway
+    // 2. Log response
+    await supabase.from('payment_logs').insert({
+        order_id: orderId,
+        gateway_response: { ...statusResult, transactionRef }
+    });
+
+    // 3. Finalize order if verified
     if (statusResult.status === 'SUCCESS' && statusResult.amount) {
-        // 2. Finalize order (atomic stock/status update using gateway-verified amount)
         const { error } = await supabase.rpc('finalize_order_payment', {
             p_order_id: orderId,
             p_transaction_ref: transactionRef,
-            p_amount: statusResult.amount
+            p_verified_amount: statusResult.amount
         });
 
         if (error) {
@@ -33,7 +41,6 @@ export async function handler(event) {
         return { statusCode: 302, headers: { Location: '/order-confirmation.html' } };
     }
 
-    // SECURITY: Fail closed. Any unconfigured, pending, or failed gateway state preserves pending order status.
     console.warn(`Payment verification failed or not configured for order ${orderId}, status: ${statusResult.status}`);
     return { statusCode: 302, headers: { Location: '/order-pending.html' } };
 }

@@ -21,29 +21,70 @@
         .summary-total { border-top: 1px solid var(--border-color); margin-top: 1rem; padding-top: 1rem; font-size: 1.2rem; color: var(--gold); font-weight: 600; }
         .btn-order { width: 100%; margin-top: 2rem; padding: 1rem; background: var(--gold); border: none; text-transform: uppercase; font-weight: 700; cursor: pointer; transition: 0.3s; }
         .btn-order:hover { background: var(--gold-light); }
+        .btn-order:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .portfolio-notice {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold);
+            padding: 1rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: var(--gold);
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+        }
+
+        .error-message {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid #ff4d4d;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            color: #ff4d4d;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .confirmation-view {
+            text-align: center;
+            padding: 4rem 2rem;
+            display: none;
+        }
+        .confirmation-view i { font-size: 4rem; color: var(--gold); margin-bottom: 2rem; }
+        .order-ref { font-family: monospace; background: var(--bg-secondary); padding: 0.5rem 1rem; border: 1px solid var(--border-color); margin: 1.5rem 0; display: inline-block; }
     </style>
 </head>
 <body>
     <div class="checkout-page">
-        <div class="container">
+        <div class="container" id="checkout-container">
+            <div class="portfolio-notice">
+                <i class="fas fa-info-circle"></i> PORTFOLIO DEMONSTRATION: This is a showcase storefront. No real charges or shipments will occur.
+            </div>
+
             <h1 style="text-align: center; font-size: 3rem; margin-bottom: 4rem;">Secure Atelier Checkout</h1>
-            <div class="checkout-grid">
+
+            <div id="checkout-error" class="error-message"></div>
+
+            <div class="checkout-grid" id="main-grid">
                 <form id="checkout-form" class="checkout-form">
                     <div class="form-group">
                         <label>Full Name</label>
-                        <input type="text" required placeholder="Enter your full name">
+                        <input type="text" id="cust-name" required placeholder="Enter your full name">
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="cust-email" required placeholder="your@email.com">
                     </div>
                     <div class="form-group">
                         <label>Mobile Number (Pakistan)</label>
-                        <input type="tel" required placeholder="03xx-xxxxxxx">
+                        <input type="tel" id="cust-phone" required placeholder="03xx-xxxxxxx">
                     </div>
                     <div class="form-group">
                         <label>Delivery Address</label>
-                        <textarea rows="3" required placeholder="Complete delivery address"></textarea>
+                        <textarea id="cust-address" rows="3" required placeholder="Complete delivery address"></textarea>
                     </div>
                     <div class="form-group">
                         <label>City</label>
-                        <input type="text" required placeholder="e.g. Lahore, Karachi, Islamabad">
+                        <input type="text" id="cust-city" required placeholder="e.g. Lahore, Karachi, Islamabad">
                     </div>
                 </form>
 
@@ -53,9 +94,19 @@
                     <div class="summary-total">
                         <div class="summary-item"><span>Grand Total</span><span id="grand-total">Rs. 0</span></div>
                     </div>
-                    <button type="submit" form="checkout-form" class="btn-order">Confirm Order (COD)</button>
+                    <button type="submit" id="submit-btn" form="checkout-form" class="btn-order">Confirm Order (Demo)</button>
                 </div>
             </div>
+        </div>
+
+        <div class="container confirmation-view" id="confirmation-view">
+            <i class="fas fa-check-circle"></i>
+            <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Order Registered</h2>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">Your demonstration order has been successfully recorded in our portfolio database.</p>
+            <p>Order Reference:</p>
+            <div class="order-ref" id="order-ref-display"></div>
+            <p style="color: var(--text-muted); margin-top: 2rem;">A member of the NOIRÉ team will simulate contact shortly.</p>
+            <a href="index.html" class="btn-order" style="display: inline-block; margin-top: 2rem; width: auto; padding: 1rem 3rem; text-decoration: none;">Return Home</a>
         </div>
     </div>
 
@@ -67,22 +118,68 @@
         const cart = getCart();
         const listEl = document.getElementById('summary-list');
         const totalEl = document.getElementById('grand-total');
+        const checkoutError = document.getElementById('checkout-error');
+        const mainGrid = document.getElementById('main-grid');
+        const confirmationView = document.getElementById('confirmation-view');
+        const orderRefDisplay = document.getElementById('order-ref-display');
+        const submitBtn = document.getElementById('submit-btn');
+
+        if (cart.length === 0) {
+            window.location.href = 'shop.html';
+        }
 
         let subtotal = 0;
         listEl.innerHTML = cart.map(item => {
             const p = products.find(prod => prod.id === item.productId);
-            const price = p.price * item.quantity;
+            const price = p ? p.price * item.quantity : 0;
             subtotal += price;
-            return `<div class="summary-item"><span>${p.name} x ${item.quantity}</span><span>Rs. ${price.toLocaleString()}</span></div>`;
+            return `<div class="summary-item"><span>${p ? p.name : 'Unknown Product'} x ${item.quantity}</span><span>Rs. ${price.toLocaleString()}</span></div>`;
         }).join('');
 
         totalEl.textContent = `Rs. ${subtotal.toLocaleString()}`;
 
-        document.getElementById('checkout-form').onsubmit = (e) => {
+        document.getElementById('checkout-form').onsubmit = async (e) => {
             e.preventDefault();
-            alert('Order placed successfully! A member of the NOIRÉ team will contact you shortly to confirm your delivery.');
-            localStorage.removeItem('noire_cart');
-            window.location.href = 'index.html';
+
+            checkoutError.style.display = 'none';
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Processing...';
+
+            const orderData = {
+                cartItems: cart,
+                customerName: document.getElementById('cust-name').value,
+                customerEmail: document.getElementById('cust-email').value,
+                customerPhone: document.getElementById('cust-phone').value,
+                shippingAddress: `${document.getElementById('cust-address').value}, ${document.getElementById('cust-city').value}`
+            };
+
+            try {
+                const response = await fetch('/.netlify/functions/checkout-init', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    localStorage.removeItem('noire_cart');
+                    orderRefDisplay.textContent = result.orderId;
+                    mainGrid.style.display = 'none';
+                    document.querySelector('.portfolio-notice').style.display = 'none';
+                    document.querySelector('h1').style.display = 'none';
+                    confirmationView.style.display = 'block';
+                    window.scrollTo(0, 0);
+                } else {
+                    throw new Error(result.error || 'Failed to process order');
+                }
+            } catch (err) {
+                checkoutError.textContent = err.message;
+                checkoutError.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Confirm Order (Demo)';
+                window.scrollTo(0, 0);
+            }
         };
     </script>
 </body>
